@@ -34,3 +34,15 @@ func NewIdNum(idNum int64) IdNum {
 func (idn *IdNum) String() string {
 	return idn.Str
 }
+
+func ParseIdNums(idNumsStr string) []IdNum {
+	idNumStrArr := strings.Split(idNumsStr, ",")
+	idNums := make([]IdNum, 0, len(idNumStrArr))
+	for _, idNumStr := range idNumStrArr {
+		if idNumStr == "" {
+			continue
+		}
+		idNums = append(idNums, NewIdNumFromStr(idNumStr))
+	}
+	return idNums
+}
