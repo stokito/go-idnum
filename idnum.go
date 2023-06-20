@@ -35,7 +35,9 @@ func (idn *IdNum) String() string {
 	return idn.Str
 }
 
-func ParseIdNums(idNumsStr string) []IdNum {
+type IdNums []IdNum
+
+func ParseIdNums(idNumsStr string) IdNums {
 	idNumStrArr := strings.Split(idNumsStr, ",")
 	idNums := make([]IdNum, 0, len(idNumStrArr))
 	for _, idNumStr := range idNumStrArr {
@@ -45,4 +47,25 @@ func ParseIdNums(idNumsStr string) []IdNum {
 		idNums = append(idNums, NewIdNumFromStr(idNumStr))
 	}
 	return idNums
+}
+
+func (ids IdNums) ToInt64s() []int64 {
+	idNums := make([]int64, 0, len(ids))
+	for _, id := range ids {
+		idNums = append(idNums, id.Num)
+	}
+	return idNums
+}
+
+func (ids IdNums) String() string {
+	lenIds := len(ids)
+	if lenIds == 0 {
+		return ""
+	}
+	idNumsStr := ids[0].String()
+	for i := 1; i < lenIds; i++ {
+		idNumsStr += "," + ids[i].String()
+
+	}
+	return idNumsStr
 }
