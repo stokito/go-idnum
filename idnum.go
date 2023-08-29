@@ -35,6 +35,29 @@ func (idn *IdNum) String() string {
 	return idn.Str
 }
 
+// UnmarshalJSON implements json.Unmarshaler
+// We can deserialize both string form "42" and int 42.
+func (idn *IdNum) UnmarshalJSON(data []byte) error {
+	bytesNumOnly := data
+	if len(data) > 2 && data[0] == '"' && data[len(data)-1] == '"' {
+		bytesNumOnly = data[1 : len(data)-1]
+	}
+	idStr := string(bytesNumOnly)
+	idNum, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return err
+	}
+	idn.Num = idNum
+	idn.Str = idStr
+	return nil
+}
+
+// MarshalJSON implements json.Marshaler
+// The IdNum will always be serialized as an integer
+func (idn *IdNum) MarshalJSON() ([]byte, error) {
+	return []byte(idn.Str), nil
+}
+
 type IdNums []IdNum
 
 func ParseIdNums(idNumsStr string) IdNums {
