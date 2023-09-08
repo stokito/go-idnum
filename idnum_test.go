@@ -7,8 +7,8 @@ import (
 
 func Test_NewIdNumFromStr(t *testing.T) {
 	idStr := " 42 " // spaces should be trimmed
-	idNum := NewIdNumFromStr(idStr)
-	exp := NewIdNum(42)
+	idNum := NewStrInt64FromStr(idStr)
+	exp := NewStrInt64(42)
 	if exp != idNum {
 		t.Fail()
 	}
@@ -25,7 +25,7 @@ func Test_NewIdNumFromStr(t *testing.T) {
 
 func Test_NewIdNumFromStr_invalid(t *testing.T) {
 	idStr := " 42invalid000 "
-	idNum := NewIdNumFromStr(idStr)
+	idNum := NewStrInt64FromStr(idStr)
 	if int64(0) != idNum.Num {
 		t.Fail()
 	}
@@ -38,7 +38,7 @@ func Test_NewIdNumFromStr_invalid(t *testing.T) {
 }
 
 type User struct {
-	Id IdNum
+	Id StrInt64
 }
 
 func Test_UnmarshalJSON_from_int(t *testing.T) {
@@ -73,7 +73,7 @@ func Test_UnmarshalJSON_from_str(t *testing.T) {
 
 func Test_MarshalJSON(t *testing.T) {
 	u := &User{
-		Id: NewIdNum(42),
+		Id: NewStrInt64(42),
 	}
 	body, err := json.Marshal(u)
 	if err != nil {
